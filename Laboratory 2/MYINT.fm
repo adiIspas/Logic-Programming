@@ -1,0 +1,71 @@
+fmod MYNAT is
+
+sorts Zero NzNat Nat .
+
+subsort Zero NzNat < Nat .
+
+op 0 : -> Zero .
+
+op s_ : Nat -> NzNat .
+
+op _+_ : Nat Nat -> Nat [assoc comm prec 33] .
+
+op _*_ : Nat Nat -> Nat [assoc comm prec 31] .
+
+vars N M : Nat .
+
+eq 0 + M = M .
+
+eq s(N) + M = s(N + M) .
+
+eq 0 * M = 0 .
+
+eq s(N) * M = (N * M) + M .
+  
+ops _<_ _>_ _>=_ _=<_ : Nat Nat -> Bool .
+  
+ops min _ _ max _ _ : Nat Nat -> Nat .
+  
+ops par _ impar _ : Nat -> Bool .
+  
+ops _ - _ : Nat Nat -> Nat .
+  
+op cmmdc _ _ : Nat Nat -> Nat .
+  
+eq 0 =< M = true .
+  
+eq M < 0 = true .
+  
+eq s(M) =< s(N) = M =< N .
+  
+eq M < N = M =< N and M =/= N .
+  
+eq M > N = N < M .
+  
+eq max M N = if M >= N then M else N fi .
+  
+eq min M N = if M >= N then N else M fi .
+
+eq par 0 = true .
+  
+eq par s(0) = false .
+  
+eq par s(s(M)) = par M .
+  
+eq impar M = par s(M) .
+  
+eq M - 0 = M .
+ 
+eq 0 - M = 0 .
+  
+eq s(N) - s(M) = N - M .
+  
+ceq cmmdc M N = M if M == N .
+  
+ceq cmmdc M N = if M > N then cmmdc (M - N) N else cmmdc M (N - M) fi .
+  
+endfm
+
+set trace on .
+
+red cmmdc s(s(0)) s(s(s(s(0)))).

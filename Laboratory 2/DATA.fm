@@ -1,0 +1,17 @@
+fmod DATA is
+
+  including NAT .
+  
+  sort Data .
+  
+  op add__ : Nat Data -> Data .
+  
+  op valid _ : Data -> Bool .
+  
+  op _ / _ / _ : Nat Nat Nat -> Data .
+  
+  vars Z L A N : Nat .
+  
+  eq valid(Z / L / A) = if Z <= 30 and L <= 12 than true else false fi .
+  
+endfm
