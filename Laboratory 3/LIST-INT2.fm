@@ -1,0 +1,33 @@
+fmod LIST-INT2 is
+  protecting INT .
+  sorts NList List .
+  subsort Int < NList < List .
+  op nil : -> List .
+  op _ _ : Int List -> NList [id: nil] .
+  op _inn_ : Int NList -> Bool .
+  op append : List List -> List .
+  op rev : List -> List .
+  op sortare : List -> List .
+  ops m MM : Int List -> List .
+  vars A B : Int .
+  vars N M L : List .
+  eq A inn B = A == B  .
+  eq A inn B N = A == B or A inn N .
+  eq append (M, nil) = M .
+  eq append (nil, M) = M .
+  eq append (A M , N) = A append(M, N).
+  eq append (A, N) = A N .
+  eq rev (A N) = append(rev(N), A) .
+  eq rev (nil) = nil .
+  eq m (A, B L) = if (B < A) then B m (A, L) else m (A, L) fi .
+  eq m (A, nil) = nil .
+  eq MM (A, B L) = if (A <= B) then B MM (A, L) else MM (A, L) fi .
+  eq MM (A, nil) = nil .
+  eq sortare (A L) = append (sortare (m (A, L)), A sortare (MM (A, L))) .
+  eq sortare (nil) = nil .
+endfm
+
+red 1 inn (2 3 4 5 1) .
+red append(1 2 3 4, 2 3 4) .
+red rev(1 2 3 4 5) .
+red sortare(2 3 4 1) .

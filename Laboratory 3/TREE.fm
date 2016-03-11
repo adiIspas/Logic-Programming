@@ -1,0 +1,63 @@
+fmod LIST-INT2 is
+  protecting INT .
+  sorts NList List .
+  subsort Int < NList < List .
+  op nil : -> List .
+  op _ _ : Int List -> NList [id: nil] .
+  op _inn_ : Int NList -> Bool .
+  op append : List List -> List .
+  op rev : List -> List .
+  op sortare : List -> List .
+  ops m MM : Int List -> List .
+  vars A B : Int .
+  vars N M L : List .
+  eq A inn B = A == B  .
+  eq A inn B N = A == B or A inn N .
+  eq append (M, nil) = M .
+  eq append (nil, M) = M .
+  eq append (A M , N) = A append(M, N).
+  eq append (A, N) = A N .
+  eq rev (A N) = append(rev(N), A) .
+  eq rev (nil) = nil .
+  eq m (A, B L) = if (B < A) then B m (A, L) else m (A, L) fi .
+  eq m (A, nil) = nil .
+  eq MM (A, B L) = if (A <= B) then B MM (A, L) else MM (A, L) fi .
+  eq MM (A, nil) = nil .
+  eq sortare (A L) = append (sortare (m (A, L)), A sortare (MM (A, L))) .
+  eq sortare (nil) = nil .
+endfm
+
+fmod TREE is
+  protecting INT .
+  protecting LIST-INT2 .
+  sort Tree .
+  op empty : -> Tree .
+  op _ _ _ : Tree Int Tree -> Tree .
+  op search : Int Tree -> Bool .
+  op depth : Tree -> Int .
+  op srd : Tree -> List .
+  op rsd : Tree -> List .
+  op sdr : Tree -> List .
+  op btinsert : NList Tree -> Tree .
+  op btsortare : NList -> NList .
+  op insert : Int Tree -> Tree .
+  vars A R : Int .
+  vars S D : Tree .
+  var L : List .
+  eq search (A, S R D) = A == R or search (A, S) or search (A, D) .
+  eq search (A, empty) = false .
+  eq depth (S R D) = 1 + max (depth(S), depth(D)) .
+  eq depth (empty) = 0 .
+  eq srd (S R D) = append(srd(S), R srd(D)) .
+  eq srd (empty) = nil .
+  eq rsd (S R D) = append(R rsd(S), rsd(D)) .
+  eq rsd (empty) = nil .
+  eq sdr (S R D) = append(sdr(S), append(sdr(D), R)) .
+  eq sdr (empty) = nil .
+  eq insert (A, S R D) = if (A <= R) then insert (A, S) R D else S R insert (A, D) fi .
+  eq insert (A, empty) = empty A empty .
+  eq btinsert (A L, S R D) = btinsert (L, insert (A, S R D) ) .
+  eq btinsert (A, S R D) = insert(A, S R D) .
+  eq btsortare (L) = srd (btinsert(L, empty)) .
+endfm
+
