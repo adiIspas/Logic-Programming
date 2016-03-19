@@ -1,0 +1,52 @@
+fth TRIV# is
+	including TRIV .
+	op #_ : Elt -> Elt .
+endfth
+  
+fth TRIV^ is
+	including TRIV .
+    op ^_ : Elt -> Elt .
+endfth
+
+fmod LIST#{X :: TRIV#} is
+  sort List{X} .
+  subsort X$Elt < List{X} .
+  op nil : -> List{X} .
+  op _ _ : List{X} List{X} -> List{X} [assoc id: nil] .
+  op apply# : List{X} -> List{X} .
+  var I : X$Elt . var L : List{X} .
+  eq apply#(nil) = nil .
+  eq apply#(I L) = (# I) apply#(L) .
+endfm
+  
+fmod POWER#{Y :: TRIV^} is
+  op apply^ : Y$Elt -> Y$Elt .
+  var Y : Y$Elt .
+  eq apply^( Y ) = (^ Y) .
+endfm
+
+view MyInt#2 from TRIV# to INT is
+	sort Elt to Int .
+	op # X:Elt to term (X:Int * 10) .
+endv
+  
+view MyInt^2 from TRIV^ to INT is
+	sort Elt to Int .
+    op ^ Y:Elt to term (Y:Int * Y:Int) .
+endv
+  
+view MyBool#2 from TRIV# to BOOL is
+  sort Elt to Bool .
+  ***op # X:Elt to term (X:Int * 10) .
+  op #_ to not_ .
+endv
+  
+fmod INT-LIST#2 is
+    protecting LIST#{MyInt#2} .
+	protecting LIST#{MyBool#2} .
+  	protecting POWER#{MyInt^2} .
+endfm
+
+red apply#( 2 5 6 ) .
+red apply#( true false true ) .
+red apply^(2) .
