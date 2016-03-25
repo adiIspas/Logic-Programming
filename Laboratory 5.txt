@@ -1,0 +1,63 @@
+fmod PAIR{X :: TRIV,Y :: TRIV} is
+  sort Pair{X, Y} .
+  op (_,_) : X$Elt Y$Elt -> Pair{X,Y} .
+  op first : Pair{X,Y} -> X$Elt .
+  op second : Pair{X,Y} -> Y$Elt .
+  var M : X$Elt .
+  var N : Y$Elt .
+  eq first(M,N) = M .
+  eq second(M,N) = N .
+endfm 
+
+view TRIV-TO-INT from TRIV to INT is
+  sort Elt to Int .
+endv
+
+fmod PAIRINT is
+  protecting PAIR {TRIV-TO-INT, TRIV-TO-INT} .
+endfm
+ 
+fmod LIST-1{X :: TRIV} is
+  sort List{X} .
+  subsort X$Elt < List{X} .
+  op nil : -> List{X} .
+  op _ _ : List{X} List{X} -> List{X} [assoc id: nil] .
+endfm
+  
+view PAIR-INT from TRIV to PAIRINT is 
+  sort Elt to Pair{TRIV-TO-INT,TRIV-TO-INT} .
+endv
+  
+fmod LISTPAIR is
+  protecting LIST-1{PAIR-INT} .
+  protecting LIST-1{TRIV-TO-INT} .
+  op @first : List {PAIR-INT} -> List {TRIV-TO-INT} .
+  op @second : List {PAIR-INT} -> List {TRIV-TO-INT} .
+  var O : Pair{TRIV-TO-INT,TRIV-TO-INT} .
+  var L : List{PAIR-INT} .
+  eq @first(O L) = first(O) @first(L) .
+  eq @first(nil) = nil .
+  eq @second(O L) = second(O) @second(L) .
+  eq @second(nil) = nil .
+endfm
+
+  red @second((2,10) (3,10)) .
+  
+view TRIVTOSTRING from TRIV to STRING is
+  sort Elt to String .
+endv
+  
+fmod PAIRSTR is
+  protecting PAIR{TRIV-TO-INT, TRIVTOSTRING} .
+endfm
+  
+view TRIVPERSTRING from TRIV to PAIRSTR is
+  sort Elt to Pair{TRIV-TO-INT, TRIVTOSTRING} .
+endv
+  
+fmod LPS is
+  protecting LIST{TRIVPERSTRING} .
+endfm
+  
+red first(2,"3") .
+red second(5,"7") .
