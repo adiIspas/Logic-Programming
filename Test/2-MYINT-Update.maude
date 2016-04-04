@@ -1,0 +1,76 @@
+fmod MYNat is
+  sort Nat .
+  
+  op 0 : -> Nat .
+  op s_ : Nat -> Nat .
+  op p_ : Nat -> Nat .
+  op _+_ : Nat Nat -> Nat [assoc comm prec 33] .
+  op _-_ : Nat Nat -> Nat [assoc comm prec 33] .
+  op _*_ : Nat Nat -> Nat [assoc comm prec 31] .
+  
+  op _<_ : Nat Nat -> Bool .
+  op _>_ : Nat Nat -> Bool .
+  op _<=_ : Nat Nat -> Bool .
+  op _>=_ : Nat Nat -> Bool .
+  op min_ _ : Nat Nat -> Nat .
+  op max_ _ : Nat Nat -> Nat .
+  op par_ : Nat -> Bool .
+  op impar_ : Nat -> Bool .
+  op cmmdc_ _ : Nat Nat -> Nat .
+  
+  vars N M : Nat .
+  
+  eq 0 + M = M .
+  eq M - 0 = M .
+  eq 0 * M = 0 .
+  
+  eq s(N) + M = s(N + M) .
+  eq s(N) * M = (N * M) + M .
+  eq N - s(M) = p(N - M) .
+  
+  eq p(N) + M = p(M + N) .
+  eq p(N) * M = (N * M) - M .
+  eq M - p(N) = s(M - N) .
+  eq s(M) - s(N) = M - N .
+  
+  eq s p N = N .
+  eq p s N = N .
+  
+  eq 0 < N = true .
+  eq N < 0 = false .
+  eq s(N) < s(M) = N < M .
+  
+  eq 0 > N = false .
+  eq N > 0 = true .
+  eq s(N) > s(M) = N > M .
+  
+  eq 0 <= N = true .
+  eq N <= 0 = if N == 0 then true else false fi .
+  eq s(N) <= s(M) = N <= M .
+  
+  eq N >= 0 = true .
+  eq 0 >= N = if N == 0 then true else false fi .
+  eq s(N) >= s(M) = N >= M .
+  
+  eq min N M = if N <= M then N else M fi .
+  eq max N M = if N >= M then N else M fi .
+  
+  eq par 0 = true .
+  eq par s(0) = false .
+  eq par s(s(N)) = par N .
+  
+  eq impar N = par s(N) .
+  
+  ceq cmmdc M N = M if M == N .
+  eq cmmdc M N = if M > N then cmmdc (M - N) N else cmmdc M (N - M) fi .
+  
+endfm
+
+red s(s(s(0))) <= s(s(0)) .
+red s(s(s(0))) >= s(s(0)) .
+red 0 >= s(0) .
+red min s(s(0)) s(0) .
+red max s(s(0)) s(0) .
+red par s(s(s(0))) .
+red impar s(s(s(0))) .
+red cmmdc s(0) s(s(0)) .

@@ -1,0 +1,21 @@
+fmod SUM is
+  sort Nat .
+  op 0 : -> Nat .
+  op succ : Nat -> Nat .
+  op plus : Nat Nat -> Nat .
+  
+  vars N M : Nat .
+  eq plus(0,M) = M .
+  eq plus(succ(N), M) = succ(plus(N,M)) .
+endfm
+
+fmod INM is
+  including SUM .
+  op mult : Nat Nat -> Nat .
+  vars N M : Nat .
+  eq mult(0,N) = 0 .
+  eq mult(succ(N),M) = plus(mult(N,M),M) .
+endfm
+
+red mult(succ(0),succ(0)) .
+red plus(succ(0),succ(0)) .

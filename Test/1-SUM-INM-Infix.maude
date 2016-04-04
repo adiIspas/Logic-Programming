@@ -1,0 +1,21 @@
+fmod SUM is
+  sort Nat .
+  op 0 : -> Nat .
+  op s : Nat -> Nat .
+  op _+_ : Nat Nat -> Nat [assoc comm prec 33].
+  
+  vars N M : Nat .
+  eq (0 + M) = M .
+  eq s(N) + M = s(N + M) .
+endfm
+
+fmod INM is
+  including SUM .
+  op _*_ : Nat Nat -> Nat [assoc comm prec 31].
+  vars N M : Nat .
+  eq 0 * N = 0 .
+  eq s(N) * M = (N * M) + M .
+endfm
+
+red s(0) + s(s(s(0))) .
+red s(0) * s(0) + s(0) .
