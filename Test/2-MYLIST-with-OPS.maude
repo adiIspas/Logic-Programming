@@ -1,0 +1,67 @@
+fmod MYLIST is
+  protecting INT .
+  sort List .
+  sort NList .
+  subsort Int < NList < List .
+  
+  op nil : -> List .
+  op _ _ : Int List -> List [id: nil].
+endfm
+
+fmod LUNGIME-LISTA is
+  protecting MYLIST .
+  
+  op length : List -> Int .
+  
+  var A : Int .
+  var L : List .
+  
+  eq length(nil) = 0 .
+  eq length(A L) = 1 + length(L) .
+endfm 
+
+red length(1 2 3 4 5) .
+
+fmod NEW-LISTA is
+  protecting MYLIST .
+  
+  op rev : List -> List .
+  op _in_ : Int NList -> Bool .
+  op append : List List -> List .
+  op rev : List -> List .
+  op sortare : List -> List .
+  op mici : Int List -> List .
+  op mari : Int List -> List .
+  op aduna : List -> Int .
+  
+  vars A B : Int .
+  vars M N L : List .
+  
+  eq A in B = if A == B then true else false fi .
+  eq A in B L = if A == B then true else A in L fi .
+  
+  eq append(L, nil) = L .
+  eq append(nil, L) = L .
+  eq append(A, N) = A N .
+  eq append(A M, N) = A append(M, N) .
+  
+  eq rev(nil) = nil .
+  eq rev(A L) = append(rev(L), A) .
+  
+  eq mici(A, B L) = if (B < A) then B mici(A, L) else mici(A, L) fi .
+  eq mici(A, nil) = nil .
+  eq mari(A, B L) = if (A <= B) then B mari(A, L) else mari(A, L) fi .
+  eq mari(A, nil) = nil .
+  eq sortare(A L) = append (sortare (mici(A, L)), A sortare (mari(A, L))) .
+  eq sortare(nil) = nil .
+  
+  eq aduna(nil) = 0 .
+  eq aduna(A L) = A + aduna(L) .
+  
+endfm
+
+red aduna(1 2 3 4) .
+red 3 in (1 2 3 4 5) .
+red append((2 2 2),(3 3 3)) .
+red rev(1 2 3 4 5) .
+red sortare(4 3 5 1 2 6 7) .

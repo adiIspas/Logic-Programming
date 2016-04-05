@@ -1,0 +1,31 @@
+fmod ADAUGA-STERGE is
+  including INT .
+  sort List .
+  sort NList .
+  subsort Int < NList < List .
+  
+  op nil : -> List .
+  op _ _ : Int List -> List [id: nil].
+  
+  op adauga : List Int -> List .
+  op append : List List -> List .
+  op sterge : Int List -> List .
+  
+  var A B X Y : Int .
+  var L M N : List .
+  
+  eq append(L, nil) = L .
+  eq append(nil, L) = L .
+  eq append(A, L) = A L .
+  eq append(A M, N) = A append(M, N) .
+  
+  eq adauga(L, nil) = L .
+  eq adauga(L, A) = append(L, A) .
+  
+  eq sterge(X,nil) = nil .
+  eq sterge(X,X L) = sterge(X,L) .
+  ceq sterge(X,Y L) = Y sterge(X,L) if X =/= Y .
+endfm
+
+red adauga((1 2 3 4), 5) .
+red sterge(3, (1 2 3 4 3 5)) .

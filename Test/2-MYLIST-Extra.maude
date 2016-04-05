@@ -1,0 +1,77 @@
+fmod MYLIST is
+  including INT .
+  
+  sort List .
+  sort NList .
+  subsort Int < NList < List .
+  
+  op nil : -> List .
+  op _ _ : Int List -> List [id: nil].
+  op append : List List -> List .
+  
+  var A : Int .
+  var T, L : List .
+  
+  eq append(L, nil) = L .
+  eq append(nil, L) = L .
+  eq append(A, L) = A L .
+  eq append(A T, L) = A append(T, L) .
+  
+endfm
+
+fmod OPERATII is
+  protecting MYLIST .
+  ***including INT .
+  
+  *** pentru 2 intregi
+  op aduna : Int Int -> Int .
+  ***op scade : Int Int -> Int .
+  op inmulteste : Int Int -> Int .
+  op imparte : Int Int -> Int .
+  
+  vars A B : Int .
+  
+  eq aduna(A, B) = A + B .
+  ***eq scade(A, B) = A - B .
+  eq inmulteste(A, B) = A * B .
+  eq imparte(A, B) = A quo B .
+  
+  *** pentru liste
+  op aduna : List List -> List .
+  ***op scade : List List -> List .
+  op inmulteste : List List -> List .
+  op imparte : List List -> List .
+  
+  vars L L1 L2 : List .
+  
+  eq aduna(nil, nil) = 0 .
+  eq aduna(nil, L) = L .
+  eq aduna(L, nil) = L .
+  eq aduna(A L1, B L2) = append(aduna(A,B), aduna(L1, L2)) .
+  
+  ***eq scade(nil, nil) = 0 .
+  ***eq scade(nil, L) = L .
+  ***eq scade(L, nil) = L .
+  ***eq scade(A L1, B L2) = append((A - B), scade(L1, L2)) .
+  
+  eq inmulteste(nil, nil) = 0 .
+  eq inmulteste(nil, L) = L .
+  eq inmulteste(L, nil) = L .
+  eq inmulteste(A L1, B L2) = append(inmulteste(A,B), inmulteste(L1, L2)) .
+  
+  eq imparte(nil, nil) = 0 .
+  eq imparte(nil, L) = L .
+  eq imparte(L, nil) = L .
+  eq imparte(A L1, B L2) = append(imparte(A,B), imparte(L1, L2)) .
+  
+endfm 
+
+red aduna(2,3) .
+***red scade(2,3) .
+red inmulteste(2,3) .
+red imparte(6,3) .
+
+red aduna((1 2 3 4 5 7), (1 2 3 4)) .
+***red scade((1 2 3 4), (2 2 3 4 5 7)) .
+red inmulteste((1 2 3 4 5 7), (1 2 3 4)) .
+red imparte((6 2 3 4 5 7), (3 2 3 4)) .
