@@ -1,0 +1,84 @@
+fmod LISTA is
+	including INT .
+	
+	sort List .
+	sort NList .
+	subsort Int < NList < List .
+	
+	op nil : -> List .
+	op _ _ : Int List -> List [id: nil] .
+	
+	op append : List List -> List .
+	op aduna : List Int -> List .
+	op sterge : List -> List .
+	op dublate1 : List -> List .
+	op dublate2 : List -> List .
+	op suma : List -> Int .
+	op sumad3 : List -> Int .
+	op dublaten : List -> List .
+	op sterge13 : List -> List .
+	op pozpare : List -> Int .
+	op par : Int -> Bool .
+	op inlpare : List -> List .
+	
+	var A B : Int .
+	var L M N : List .
+	
+	eq append(L,nil) = L .
+	eq append(nil, L) = L .
+	eq append(A, L) = A L .
+	eq append(A M, N) = A append(M, N) .
+	
+	eq aduna(nil, A) = nil .
+	eq aduna(B L,A) = (B + A) aduna(L, A).
+	
+	eq sterge(nil) = nil .
+	ceq sterge(A L) = A sterge(L) if not (3 divides A) .
+	ceq sterge(A L) = sterge(L) if (3 divides A) .
+	
+	eq dublate1(nil) = nil .
+	eq dublate1(A) = A A .
+	eq dublate1(A B L) = A A B dublate1(L) .
+	
+	eq dublate2(nil) = nil .
+	eq dublate2(A) = A .
+	eq dublate2(A B L) = A B B dublate2(L) .
+	
+	eq suma(nil) = 0 .
+	ceq suma(A nil) = A if (A >= 1 and A <= 3) .
+	ceq suma(A L) = A + suma(L) if (A >= 1 and A <= 3) .
+	ceq suma(A L) = suma(L) if (A < 1 or A > 3) .
+	
+	eq sumad3(nil) = 0 .
+	ceq sumad3(A nil) = A if (3 divides A) .
+	ceq sumad3(A L) = A + sumad3(L) if (3 divides A) .
+	ceq sumad3(A L) = sumad3(L) if not(3 divides A) .
+	
+	eq dublaten(nil) = nil .
+	ceq dublaten(A L) = A A dublaten(L) if A < 0 .
+	ceq dublaten(A L) = A dublaten(L) if A >= 0 .
+	ceq dublaten(A nil) = A A if A < 0 .
+	ceq dublaten(A L) = A A dublaten(L) if A < 0 .
+	
+	eq sterge13(nil) = nil .
+	ceq sterge13(A nil) = nil if (A >= 1 and A <= 3) .
+	ceq sterge13(A nil) = A if (A < 1 or A > 3) .
+	ceq sterge13(A L) = sterge13(L) if (A >= 1 and A <= 3) .
+	ceq sterge13(A L) = A sterge13(L) if (A < 1 or A > 3) .
+	
+	eq pozpare(nil) = 0 .
+	eq pozpare(A B nil) = 1 .
+	eq pozpare(A nil) = 0 .
+	eq pozpare(A B L) = 1 + pozpare(L) .
+	
+	ceq par(A) = true if (2 divides A) .
+	ceq par(A) = false if not (2 divides A) .
+	
+	eq inlpare(nil) = nil .
+	ceq inlpare(A) = 10 if (par(A) == true) .
+	ceq inlpare(A) = A if (par(A) == false) .
+	ceq inlpare(A L) = 10 inlpare(L) if (par(A) == true) .
+	ceq inlpare(A L) = A inlpare(L) if (par(A) == false) .
+	ceq inlpare(A nil) = 10 if (par(A) == true) .
+	ceq inlpare(A nil) = A if (par(A) == false) .
+endfm
