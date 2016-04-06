@@ -1,0 +1,108 @@
+fmod TREE is
+	protecting INT .
+	sort Tree .
+	
+	op empty : -> Tree .
+	op _ _ _ : Tree Int Tree -> Tree .
+endfm
+
+fmod MIRROR is
+	protecting TREE .
+	
+	op mirror : Tree -> Tree .
+	
+	var I : Int .
+	vars L R : Tree .
+	
+	eq mirror(empty) = empty .
+	eq mirror(L I R) = mirror(R) I mirror(L) .
+endfm
+
+***red mirror((empty 1 empty) 2 (empty 3 (empty 4 empty))) .
+
+fmod MYLIST is 
+	protecting INT .
+	
+	sort List .
+	sort NList .
+	subsort Int < NList < List .
+	
+	op nil : -> List .
+	op _ _ : Int List -> List [id: nil].
+	
+	op append : List List -> List .
+	
+	var A : Int .
+	vars L1 L2 : List .
+	
+	eq append(L1, nil) = L1 .
+	eq append(nil, L1) = L1 .
+	eq append(A, L1) = A L1 .
+	eq append(A L1, L2) = A append(L1, L2).
+endfm
+
+***red append((1 2 3),(3 2 1)) .
+
+fmod OPERATII is
+	protecting TREE .
+	protecting MYLIST .
+	
+	op search : Int Tree -> Bool .
+	op depth : Tree -> Int .
+	op SRD : Tree -> List .
+	op RSD : Tree -> List .
+	op SDR : Tree -> List .
+	op insert : Int Tree -> Tree .
+	op btinsert : List Tree -> Tree .
+	op btsortare : List -> List .
+	
+	vars A I : Int .
+	vars L R T : Tree .
+	var N : List .
+	
+	eq search(A, empty) = false .
+	ceq search(A,L I R) = true if A == I .
+	ceq search(A,L I R) = search(A,L) if A < I .
+	ceq search(A,L I R) = search(A,R) if A > I .
+	
+	eq depth(empty) = 0 .
+	eq depth(L I R) = 1 + max(depth(L),depth(R)) .
+	
+	eq SRD(empty) = nil .
+	eq SRD(L I R) = append(SRD(L), I SRD(R)) .
+	
+	eq RSD(empty) = nil .
+	eq RSD(L I R) = I RSD(L) RSD(R) .
+	
+	eq SDR(empty) = nil .
+	eq SDR(L I R) = SDR(L) append(SDR(R), I) .
+	
+	eq insert(A, empty) = empty A empty .
+	eq insert(A, L I R) = if (A <= I) then insert(A, L) I R else L I insert(A, R) fi .
+	
+	eq btinsert(A, empty) = empty A empty .
+	eq btinsert(nil, T) = T .
+	eq btinsert(A N, empty) = btinsert(N, empty A empty) .
+	eq btinsert(A, L I R) = insert(A, L I R) .
+	eq btinsert(A N, L I R) = btinsert(N, insert(A, L I R)) .
+	
+	eq btsortare (N) = SRD(btinsert(N, empty)) .
+	
+endfm
+
+***red insert(5, (empty 2 empty) 3 (empty 4 empty)) .
+
+***red btinsert(5 4 5 2 1, (empty 2 empty) 3 (empty 4 empty)) .
+
+***red btinsert(5 4 5 2 1, empty ) .
+
+red btsortare(10 1 2 3 4 5 5 4 5 2 1) .
+
+***red SRD((empty 1 empty) 2 ((empty 2 empty) 3 (empty 4 empty))) .
+***red SDR((empty 1 empty) 2 ((empty 2 empty) 3 (empty 4 empty))) .
+***red RSD((empty 1 empty) 2 ((empty 2 empty) 3 (empty 4 empty))) .
+
+***red search(4,(empty 1 empty) 2 (empty 3 (empty 4 empty))) .
+
+*** just for test, is not a binary tree :)
+***red depth((empty 1 empty) 2 ((empty 2 (empty 4 empty)) 3 (empty 4 empty))) .
