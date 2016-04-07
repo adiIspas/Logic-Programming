@@ -1,0 +1,54 @@
+fth GRUP is
+  including TRIV .
+  
+  op _%_ : Elt Elt -> Elt [assoc] .
+  op !_ : Elt -> Elt .
+  op z : -> Elt .
+endfth
+  
+fmod TRIPLET{X :: GRUP, Y :: GRUP, Z :: GRUP} is
+  sort Triplet{X,Y,Z} .
+  
+  op (_,_,_) : X$Elt Y$Elt Z$Elt -> Triplet{X,Y,Z} .
+  op unu : Triplet{X,Y,Z} -> X$Elt .
+  op doi : Triplet{X,Y,Z} -> Y$Elt .
+  op trei : Triplet{X,Y,Z} -> Z$Elt .
+  op _+_ : Triplet{X,Y,Z} Triplet{X,Y,Z} -> Triplet{X,Y,Z} .
+  op @_ : Triplet{X,Y,Z} -> Triplet{X,Y,Z} .
+  
+  var A : X$Elt .
+  var B : Y$Elt .
+  var C : Z$Elt .
+  
+  var M : X$Elt .
+  var N : Y$Elt .
+  var P : Z$Elt .
+  
+  eq (A,B,C) + (M,N,P) = A % M , B % N,  C % P .
+  eq @(A,B,C) = !(A) , !(B) , !(C) .
+endfm
+  
+view GrupRat from GRUP to RAT is
+  sort Elt to Rat .
+  
+  op _%_ to _+_ .
+  op !_ to -_ .
+  op z to term 0 .
+endv
+  
+view GrupInt from GRUP to INT is
+  sort Elt to Int .
+  
+  op _%_ to _+_ .
+  op !_ to -_ .
+  op z to term 0 .
+endv
+  
+fmod IGROUP is
+  protecting TRIPLET{GrupRat,GrupRat,GrupInt} .
+endfm
+  
+red (1/2,2/3,3) + (3/4,5/2,1) .
+red @(1/2,2/3,3) .
+  
+  

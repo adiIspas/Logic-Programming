@@ -1,0 +1,49 @@
+fmod LISTA is
+  protecting INT .
+  
+  sort List .
+  subsort Int < List .
+  
+  op nil : -> List .
+  op _ _ : Int List -> List [id: nil].
+  op append : List List -> List [assoc] .
+  
+  *** intoarce suma elementelor impare din lista
+  op pA : List -> Int .
+  
+  *** dubleaza elementele divizibile cu 3
+  op pB : List -> List .
+  
+  *** inlocuie elementele din [1,3] cu I
+  op pC : Int List -> List .
+  
+  var I A : Int .
+  var L L1 L2 : List .
+  
+  eq append(L, nil) = L .
+  eq append(nil, L) = L .
+  eq append(A, L) = A L .
+  eq append(A L1, L2) = A append(L1,L2) .
+  
+  eq pA(nil) = 0 .
+  ceq pA(I) = I if not (2 divides I) .
+  ceq pA(I L) = I + pA(L) if not (2 divides I) .
+  ceq pA(I L) = pA(L) if (2 divides I) .
+  
+  eq pB(nil) = nil .
+  ceq pB(I) = I I if (3 divides I) .
+  ceq pB(I) = I if not (3 divides I) .
+  ceq pB(I L) = I I pB(L) if (3 divides I) .
+  ceq pB(I L) = I pB(L) if not (3 divides I) .
+  
+  eq pC(I,nil) = nil .
+  ceq pC(I, A) = I if (A >= 1 and A <= 3) .
+  ceq pC(I, A) = A if (A < 1 or A > 3) .
+  ceq pC(I, A L) = I pC(I, L) if (A >= 1 and A <= 3) .
+  ceq pC(I, A L) = A pC(I, L) if (A < 1 or A > 3) .
+  
+endfm
+
+red pA(1 2 3 4 5 6 7) .
+red pB(1 2 3 4 5 6 7) .
+red pC(-1,1 2 3 4 5 6 7) .

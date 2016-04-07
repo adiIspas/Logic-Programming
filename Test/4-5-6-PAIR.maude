@@ -1,0 +1,35 @@
+fmod PAIR{X :: TRIV,Y :: TRIV} is
+	sort Pair{X,Y} .
+	
+	op (_,_) : X$Elt Y$Elt -> Pair{X,Y} .
+	op first : Pair{X,Y} -> X$Elt .
+	op second : Pair{X,Y} -> Y$Elt .
+	
+	var M : X$Elt .
+	var N : Y$Elt .
+	
+	eq first(M,N) = M .
+	eq second(M,N) = N .
+endfm
+
+view TRIV-TO-INT from TRIV to INT is
+	sort Elt to Int .
+endv
+
+view TRIV-TO-STRING from TRIV to STRING is
+	sort Elt to String .
+endv
+
+fmod PAIRINT is
+	protecting PAIR{TRIV-TO-INT, TRIV-TO-INT} .
+endfm
+
+red first(2,3) .
+red second(2,3) .
+
+fmod PAIRSTRING is
+	protecting PAIR{TRIV-TO-STRING, TRIV-TO-STRING} .
+endfm
+
+red first("2","3") .
+red second("2", "3") .

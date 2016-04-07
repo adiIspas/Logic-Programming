@@ -1,0 +1,42 @@
+fth TEORIE is
+  including TRIV .
+  op _+_ : Elt Elt -> Elt [assoc] .
+  op _*_ : Elt Elt -> Elt [assoc] .
+  op #_ : Elt -> Elt .
+endfth
+
+fmod LISTA{X :: TEORIE} is
+	sort List{X} .
+	subsort X$Elt < List{X} .
+	
+	op nil : -> List{X} .
+	op _ _ : X$Elt List{X} -> List{X} [id: nil] .
+	op suma : List{X} -> X$Elt .
+  	op produs : List{X} -> X$Elt .
+  	op patrat : List{X} -> List{X} .
+	
+	var A : X$Elt .
+	var L : List{X} .
+	
+	eq suma(A) = A .
+	eq suma(A L) = A + suma(L) . 
+  	
+  	eq produs(A) = A .
+  	eq produs(A L) = A * produs(L) .
+  
+  	eq patrat(nil) = nil .
+  	eq patrat(A L) = (# A) patrat(L) .
+endfm
+
+view List-Int from TEORIE to INT is
+	sort Elt to Int .
+  	op # X:Elt to term (X:Int * X:Int) .
+endv
+
+fmod APPLIST is
+	protecting LISTA{List-Int} .
+endfm 
+
+red suma(1 2 3) .
+red produs(1 2 3 4) .
+red patrat(1 2 3 4) .
